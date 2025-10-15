@@ -27,60 +27,91 @@ const GoldLine = ({ className = "" }) => {
 };
 
 // Type1 Slide Component
+// Type1 Slide Component
 const Type1Slide = ({ data }) => {
   return (
-    <div className="flex w-full h-full">
-      <div className="w-3/4">
+    <div className={`flex w-full h-full ${data.reverse ? 'flex-row-reverse' : ''}`}>
+      {/* Image container with relative positioning */}
+      <div className={data.imageContainerClassName || 'w-3/4'}>
         <img 
           src={data.image.src} 
           className={data.image.className}
-          alt={data.title.text}
+          alt={data.title?.text || ''}
         />
+        
+        {/* ✅ Overlay content - text, line, and subtext */}
+        {data.overlayText?.text && (
+          <div className={data.overlayPosition}>
+            {/* Main overlay text */}
+            <div className={`${data.overlayText.className} text-element`}>
+              {data.overlayText.text}
+            </div>
+            
+            {/* Golden line */}
+            {data.overlayText.showLine && (
+              <div className="text-element">
+                <GoldLine className={data.overlayText.lineClassName} />
+              </div>
+            )}
+            
+            {/* Subtext */}
+            {data.overlayText.subtext && (
+              <div className={`${data.overlayText.subtextClassName} text-element`}>
+                {data.overlayText.subtext}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
+      {/* Content section */}
       <div className={data.contentClassName}>
-        {/* ✅ Title with animation class */}
-        <h2 className={`${data.title.className} text-element`}>
-          {data.title.text}
-        </h2>
+        {data.title?.text && (
+          <h2 className={`${data.title.className} text-element`}>
+            {data.title.text}
+          </h2>
+        )}
         
-        {/* ✅ GoldLine controlled by data */}
         {data.showLineAfterTitle && (
           <div className="text-element">
             <GoldLine className={data.lineAfterTitleClassName} />
           </div>
         )}
         
-        {/* ✅ Description with animation class */}
-        <p className={`${data.description.className} text-element`}>
-          {data.description.text}
-        </p>
+        {data.description?.text && (
+          <p className={`${data.description.className} text-element`}>
+            {data.description.text}
+          </p>
+        )}
 
-        {/* ✅ Stats with individual animations */}
-        <div className={data.statsContainerClassName}>
-          {data.stats.map((stat, index) => (
-            <div key={index}>
-              <div className="flex items-baseline text-element">
-                <span className={stat.valueClassName}>
-                  {stat.value}
-                </span>
-                <span className={stat.labelClassName}>
-                  {stat.label}
-                </span>
-              </div>
-              {/* ✅ Line controlled by data */}
-              {stat.showLineAfter && (
-                <div className="text-element">
-                  <GoldLine className={stat.lineClassName} />
+        {data.stats && data.stats.length > 0 && (
+          <div className={data.statsContainerClassName}>
+            {data.stats.map((stat, index) => (
+              <div key={index}>
+                <div className="flex items-baseline text-element">
+                  <span className={stat.valueClassName}>
+                    {stat.value}
+                  </span>
+                  <span className={stat.labelClassName}>
+                    {stat.label}
+                  </span>
                 </div>
-              )}
-            </div>
-          ))}
-        </div>
+                {stat.showLineAfter && (
+                  <div className="text-element">
+                    <GoldLine className={stat.lineClassName} />
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
 };
+
+
+
 
 // Main Broucher Component
 const Broucher = () => {

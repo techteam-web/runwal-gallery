@@ -1036,7 +1036,197 @@ export const type1SlidesData = [
   ],
   contentClassName: 'w-1/4 bg-white p-8 flex flex-col justify-center',
   statsContainerClassName: 'space-y-4'
+} ,
+{
+  id: 24,
+  image: {
+    src: '/slides/16.png',
+    className: 'object-cover w-full h-full'
+  },
+  title: {
+    text: '', // Empty
+    className: ''
+  },
+  showLineAfterTitle: false,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: '', // Empty
+    className: ''
+  },
+  stats: [],
+  
+  // ✅ KEY CHANGES: Hide content section and make image full width
+  contentClassName: 'w-0 overflow-hidden', // ✅ Width 0 = hidden
+  statsContainerClassName: 'space-y-4',
+  
+  // ✅ Need to add this to data structure (if not already there)
+  imageContainerClassName: 'w-full' // ✅ Image takes full width
+},
+{
+  id: 26,
+  image: {
+    src: '/slides/17.jpg',
+    className: 'object-contain w-full h-full' // ✅ object-contain = fits without cropping
+  },
+  title: {
+    text: '',
+    className: ''
+  },
+  showLineAfterTitle: false,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: '',
+    className: ''
+  },
+  stats: [],
+  
+  contentClassName: 'w-0 overflow-hidden', // ✅ Hidden content
+  statsContainerClassName: 'space-y-4',
+  
+  imageContainerClassName: 'w-full' // ✅ Full width container (removed 'object-cover')
+},{
+  id: 26,
+  image: {
+    src: '/broucher/24.jpg',
+    className: 'object-cover w-full h-full'
+  },
+  imageContainerClassName: 'w-3/4', // ✅ Still 3/4 but will be on right
+  title: {
+    text: 'BUILT FOR \nGENERATIONS \nTO COME.',
+    className: 'text-xl tracking-widest text-gray-500 mb-4 font-[holland] whitespace-pre-line'
+  },
+  showLineAfterTitle: true,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: 'At Runwal Realty, we don’t just build spaces; we create living experiences where memories are made, generations bond, and legacies begin.With a commitment to excellence, we craft enduring spaces that inspire pride and stand the test of time, laying the foundation for growth, success, and a lasting legacy.',
+    className: 'text-gray-600 leading-relaxed mb-8 font-[subtext] py-5'
+  },
+  stats: [],
+  contentClassName: 'w-1/4 bg-white p-8 flex flex-col justify-center',
+  statsContainerClassName: 'space-y-4',
+  reverse: true // ✅ Add this to reverse the layout
+},
+{
+  id: 27,
+  image: {
+    src: '/slides/18.jpg',
+    className: 'object-contain w-full h-full' // ✅ object-contain = fits without cropping
+  },
+  title: {
+    text: '',
+    className: ''
+  },
+  showLineAfterTitle: false,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: '',
+    className: ''
+  },
+  stats: [],
+  
+  contentClassName: 'w-0 overflow-hidden', // ✅ Hidden content
+  statsContainerClassName: 'space-y-4',
+  
+  imageContainerClassName: 'w-full' // ✅ Full width container (removed 'object-cover')
+},{
+  id: 28,
+  image: {
+    src: '/slides/35.jpg',
+    className: 'object-contain w-full h-full' // ✅ object-contain for image, removed bg color
+  },
+  title: {
+    text: '',
+    className: ''
+  },
+  showLineAfterTitle: false,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: '',
+    className: ''
+  },
+  stats: [],
+  
+  contentClassName: 'w-0 overflow-hidden', // ✅ Hidden content section
+  statsContainerClassName: 'space-y-4',
+  
+  imageContainerClassName: 'w-full bg-[#FAFAFA] flex items-center justify-center' // ✅ Full width + background color + centering
+},
+{
+  id: 29,
+  image: {
+    src: '/broucher/25.jpg',
+    className: 'object-contain w-full h-full'
+  },
+  title: {
+    text: '',
+    className: ''
+  },
+  showLineAfterTitle: false,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: '',
+    className: ''
+  },
+  stats: [],
+  
+  // ✅ Overlay with text, line, and subtext
+  overlayText: {
+    text: 'SO RARE, YOULL BE THE\nFIRST TO GREET THE CITY \nSUNRISE AND LAST TO BID\nFAREWELL TO ITS SUNSET.',
+    className: 'text-xl font-normal text-gray-800 font-[holland] tracking-widest whitespace-pre-line mb-2',
+    showLine: true, // ✅ Show golden line
+    lineClassName: 'my-3',
+    subtext: 'An iconic lifestyle Malabar Hill has yet to witness.', // ✅ Subtext
+    subtextClassName: 'text-sm text-gray-600 font-[subtext] leading-relaxed mt-2'
+  },
+  overlayPosition: 'absolute top-[20%] right-[20%] max-w-md', // ✅ Position + width control
+  
+  contentClassName: 'w-0 overflow-hidden',
+  statsContainerClassName: 'space-y-4',
+  imageContainerClassName: 'w-full relative'
+},
+{
+  id: 30,
+  image: {
+    src: '/broucher/26.png',
+    className: 'object-contain w-full h-full'
+  },
+  title: {
+    text: '',
+    className: ''
+  },
+  showLineAfterTitle: false,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: '',
+    className: ''
+  },
+  stats: [],
+  
+  // ✅ Overlay with text, line, and subtext
+  overlayText: {
+    text: '11 PRIVATE SKY MANSION, \nCRAFTED TO REIGN OVER \nTHE CITY.',
+    className: 'text-xl font-normal text-gray-800 font-[holland] tracking-widest whitespace-pre-line mb-2',
+    showLine: true, // ✅ Show golden line
+    lineClassName: 'my-3',
+    subtext: 'Craft your legacy at Mumbais most prestigious enclave.', // ✅ Subtext
+    subtextClassName: 'text-sm text-gray-600 font-[subtext] leading-relaxed mt-2'
+  },
+  overlayPosition: 'absolute top-[20%] right-[20%] max-w-md', // ✅ Position + width control
+  
+  contentClassName: 'w-0 overflow-hidden',
+  statsContainerClassName: 'space-y-4',
+  imageContainerClassName: 'w-full relative'
 }
+
+
+
 
   
   
