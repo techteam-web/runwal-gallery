@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin'; // MUST ADD THIS
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { CustomEase } from 'gsap/CustomEase';
 import { useGSAP } from '@gsap/react';
 
@@ -20,8 +20,29 @@ const Gallery = () => {
   const scrollTriggerRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  // ✅ Prevent scroll restoration and force scroll to top on refresh
+  useEffect(() => {
+    // Disable browser's automatic scroll restoration
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+
+    // Force scroll to top on component mount (page refresh)
+    window.scrollTo(0, 0);
+
+    // Also reset on beforeunload to ensure clean state
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
+
   const slides = [
-    // ... your slides array stays the same
     {
       id: 1,
       bgImage: '/slides/background.jpg',
@@ -29,7 +50,7 @@ const Gallery = () => {
         { src: '/slides/1.png', position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', size: 'w-64' },
       ],
       texts: [
-        { content: 'Building for generations to come', position: 'bottom-4 left-1/2 -translate-y-1/2 -translate-x-1/2 uppercase', size: 'text-4xl', color: 'text-[#AA8A4C]' }
+        { content: 'Building for generations to come', position: 'bottom-4 left-1/2 -translate-y-1/2 -translate-x-1/2 uppercase', size: 'text-5xl', color: 'text-[#AA8A4C]' }
       ]
     },
     {
@@ -60,9 +81,7 @@ const Gallery = () => {
       images: [
         { src: '/slides/4.jpg', position: ' absolute top-0 left-0 w-full h-full z-20', size: 'w-[90%]' }
       ],
-      texts: [
-       
-      ]
+      texts: []
     },
     {
       id: 5,
@@ -226,34 +245,81 @@ const Gallery = () => {
     { id: 38, bgImage:'/slides/background.jpg', images:[{ src:'/slides/38.png', position:'absolute top-[10%] left-[15%]', size: 'w-[70%]' }], texts:[] },
     { id: 39, bgImage:'/slides/background.jpg', images:[{ src:'/slides/39.png', position:'absolute top-0 left-0 w-full h-full', size: 'w-[90%]' }], texts:[] }
   ];
-const navigateToSlide = (targetIndex) => {
-  if (!scrollTriggerRef.current) return;
-  
-  const st = scrollTriggerRef.current;
-  
-  // Calculate target scroll position
-  const targetProgress = targetIndex / (slides.length - 1);
-  const scrollDistance = st.end - st.start;
-  const targetScroll = st.start + (scrollDistance * targetProgress);
-  
-  // Calculate current position
-  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-  
-  // Calculate distance traveled
-  const distance = Math.abs(targetScroll - currentScroll);
-  
-  // Fixed duration per slide (0.8 seconds per slide)
-  const slideDistance = scrollDistance / (slides.length - 1);
-  const slidesJumped = distance / slideDistance;
-  const duration = slidesJumped * 0.8; // 0.8s per slide
-  
-  gsap.to(window, {
-    scrollTo: { y: targetScroll, autoKill: false },
-    duration: duration,
-    ease: "power2.inOut"
-  });
-};
 
+  // ✅ Define random slide directions
+  const getRandomDirection = () => {
+    const directions = [
+      { 
+        // Slide from left
+        initial: { clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", x: -500 },
+        final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 }
+      },
+      { 
+        // Slide from right  
+        initial: { clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", x: 500 },
+        final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 }
+      },
+      { 
+        // Slide from top
+        initial: { clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)", y: -300 },
+        final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", y: 0 }
+      },
+      { 
+        // Slide from bottom
+        initial: { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", y: 300 },
+        final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", y: 0 }
+      },
+      { 
+        // Diagonal from top-left
+        initial: { clipPath: "polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%)", x: -300, y: -200 },
+        final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0, y: 0 }
+      },
+      { 
+        // Diagonal from bottom-right
+        initial: { clipPath: "polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%)", x: 300, y: 200 },
+        final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0, y: 0 }
+      }
+    ];
+    return directions[Math.floor(Math.random() * directions.length)];
+  };
+
+  // ✅ Generate random directions for each slide (regenerate on each component mount)
+  const slideDirections = useRef(
+    slides.map(() => getRandomDirection())
+  );
+
+  // ✅ Regenerate random directions on component mount (refresh)
+  useEffect(() => {
+    slideDirections.current = slides.map(() => getRandomDirection());
+  }, []);
+
+  const navigateToSlide = (targetIndex) => {
+    if (!scrollTriggerRef.current) return;
+    
+    const st = scrollTriggerRef.current;
+    
+    // Calculate target scroll position
+    const targetProgress = targetIndex / (slides.length - 1);
+    const scrollDistance = st.end - st.start;
+    const targetScroll = st.start + (scrollDistance * targetProgress);
+    
+    // Calculate current position
+    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+    
+    // Calculate distance traveled
+    const distance = Math.abs(targetScroll - currentScroll);
+    
+    // Fixed duration per slide (0.8 seconds per slide)
+    const slideDistance = scrollDistance / (slides.length - 1);
+    const slidesJumped = distance / slideDistance;
+    const duration = slidesJumped * 0.8; // 0.8s per slide
+    
+    gsap.to(window, {
+      scrollTo: { y: targetScroll, autoKill: false },
+      duration: duration,
+      ease: "power2.inOut"
+    });
+  };
 
   const handlePrevSlide = () => {
     const newIndex = Math.max(0, currentSlide - 1);
@@ -270,18 +336,23 @@ const navigateToSlide = (targetIndex) => {
   useGSAP(() => {
     const slideElements = gsap.utils.toArray('.slide');
     
-    // Set initial clipPath states
+    // ✅ Set initial states based on random directions
     slideElements.forEach((slide, index) => {
+      const direction = slideDirections.current[index];
+      
       if (index === 0) {
         gsap.set(slide, {
           clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         });
-        gsap.set(slide.querySelector('.slide-content'), { x: 0 });
+        gsap.set(slide.querySelector('.slide-content'), { x: 0, y: 0 });
       } else {
         gsap.set(slide, {
-          clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)",
+          clipPath: direction.initial.clipPath,
         });
-        gsap.set(slide.querySelector('.slide-content'), { x: 250 });
+        gsap.set(slide.querySelector('.slide-content'), { 
+          x: direction.initial.x || 0, 
+          y: direction.initial.y || 0 
+        });
       }
     });
 
@@ -310,24 +381,33 @@ const navigateToSlide = (targetIndex) => {
         const currentContent = slide.querySelector('.slide-content');
         const currentTexts = slide.querySelectorAll('.text-element');
 
+        // ✅ Get random directions for current and previous slides
+        const currentDirection = slideDirections.current[index];
+        const prevDirection = slideDirections.current[index - 1];
+
         gsap.set(currentTexts, { opacity: 0, y: 20 });
 
         const timelinePosition = (index - 1) * 4.5;
 
+        // ✅ Animate previous slide out in random direction
         tl.to(prevContent, {
-          x: -500,
+          x: prevDirection.initial.x || -500,
+          y: prevDirection.initial.y || 0,
           duration: 2.5,
           ease: "hop"
         }, timelinePosition)
         
+        // ✅ Animate current slide clipPath
         .to(slide, {
-          clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+          clipPath: currentDirection.final.clipPath,
           duration: 2.5,
           ease: "hop",
         }, timelinePosition)
         
+        // ✅ Animate current slide content from random direction
         .to(currentContent, {
-          x: 0,
+          x: currentDirection.final.x || 0,
+          y: currentDirection.final.y || 0,
           duration: 2.5, 
           ease: "hop"
         }, timelinePosition)
@@ -345,24 +425,21 @@ const navigateToSlide = (targetIndex) => {
     });
 
     // Create ScrollTrigger
-// Create ScrollTrigger
-const st = ScrollTrigger.create({
-  trigger: containerRef.current,
-  start: 'top top',
-  end: () => `+=${window.innerHeight * slides.length * 1}`,
-  animation: tl,
-  scrub: 1.5, // REDUCED from 3 to 1.5 for better responsiveness
-  pin: true,
-  anticipatePin: 1,
-  onUpdate: (self) => {
-    const newIndex = Math.round(self.progress * (slides.length - 1));
-    if (newIndex !== currentSlide) {
-      setCurrentSlide(newIndex);
-    }
-  }
-});
-
-
+    const st = ScrollTrigger.create({
+      trigger: containerRef.current,
+      start: 'top top',
+      end: () => `+=${window.innerHeight * slides.length * 1}`,
+      animation: tl,
+      scrub: 1.5,
+      pin: true,
+      anticipatePin: 1,
+      onUpdate: (self) => {
+        const newIndex = Math.round(self.progress * (slides.length - 1));
+        if (newIndex !== currentSlide) {
+          setCurrentSlide(newIndex);
+        }
+      }
+    });
 
     scrollTriggerRef.current = st;
     console.log('ScrollTrigger created:', st.start, st.end);
@@ -406,6 +483,10 @@ const st = ScrollTrigger.create({
                 <div
                   key={idx}
                   className={`text-element absolute ${text.position} ${text.size} ${text.color} font-bold`}
+                  style={{
+                    fontFamily:'holland',
+                    fontWeight:'normal'
+                  }}
                 >
                   {text.content}
                 </div>
@@ -436,11 +517,6 @@ const st = ScrollTrigger.create({
       filter: 'brightness(0) saturate(100%) invert(61%) sepia(85%) saturate(549%) hue-rotate(359deg) brightness(92%) contrast(87%)'
     }}/>
         </button>
-
-        {/* Slide Counter */}
-        {/* <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-black/50 text-white px-4 py-2 rounded-full text-sm">
-          {currentSlide + 1} / {slides.length}
-        </div> */}
       </div>
     </div>
   );

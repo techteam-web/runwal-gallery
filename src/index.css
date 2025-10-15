@@ -9,3 +9,7 @@ body {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
 }
+@font-face {
+  font-family: holland;
+  src: url(/font.otf);
+}
