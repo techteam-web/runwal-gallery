@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { CustomEase } from 'gsap/CustomEase';
 import { useGSAP } from '@gsap/react';
 
-// REGISTER ScrollToPlugin
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, useGSAP, CustomEase);
+// REGISTER plugins
+gsap.registerPlugin(useGSAP, CustomEase);
 
 // Create custom ease
 CustomEase.create(
@@ -17,30 +15,8 @@ CustomEase.create(
 const Gallery = () => {
   const containerRef = useRef(null);
   const slidesRef = useRef(null);
-  const scrollTriggerRef = useRef(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-
-  // ✅ Prevent scroll restoration and force scroll to top on refresh
-  useEffect(() => {
-    // Disable browser's automatic scroll restoration
-    if ('scrollRestoration' in history) {
-      history.scrollRestoration = 'manual';
-    }
-
-    // Force scroll to top on component mount (page refresh)
-    window.scrollTo(0, 0);
-
-    // Also reset on beforeunload to ensure clean state
-    const handleBeforeUnload = () => {
-      window.scrollTo(0, 0);
-    };
-
-    window.addEventListener('beforeunload', handleBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, []);
+  const isAnimating = useRef(false);
 
   const slides = [
     {
@@ -50,7 +26,7 @@ const Gallery = () => {
         { src: '/slides/1.png', position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', size: 'w-64' },
       ],
       texts: [
-        { content: 'Building for generations to come', position: 'bottom-4 left-1/2 -translate-y-1/2 -translate-x-1/2 uppercase', size: 'text-5xl', color: 'text-[#AA8A4C]' }
+        { content: 'Building for generations to come', position: 'bottom-[10%] left-1/2 -translate-y-1/2 -translate-x-1/2 uppercase', size: 'text-5xl', color: 'text-[#AA8A4C]' }
       ]
     },
     {
@@ -106,7 +82,7 @@ const Gallery = () => {
         { src: '/slides/7.png', position: 'top-[60%] left-[50%] -translate-x-1/2 -translate-y-1/2', size: 'w-[80%]' }
       ],
       texts: [
-        { content: 'Striking Deals That Made Headlines', position: 'top-[15%] left-[35%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' }
+        { content: 'Striking Deals That Made Headlines', position: 'top-[15%] left-[25%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' }
       ]
     },
     {
@@ -116,7 +92,7 @@ const Gallery = () => {
         { src: '/slides/8.png', position: 'top-[60%] left-[50%] -translate-x-1/2 -translate-y-1/2', size: 'w-[80%]' }
       ],
       texts: [
-        { content: 'The Investment Story - Appreciation That Markets Envy', position: 'top-[15%] left-[35%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' }
+        { content: 'The Investment Story - Appreciation That Markets Envy', position: 'top-[15%] left-[30%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' }
       ]
     },
     {
@@ -142,8 +118,8 @@ const Gallery = () => {
         { src: '/slides/11.png', position: 'top-[60%] left-[50%] -translate-x-1/2 -translate-y-1/2', size: 'w-[80%]' }
       ],
       texts: [
-        { content: 'FY25 Has Been Nothing Short Of Spectacular', position: 'top-[15%] left-[33%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' },
-        { content: 'We Kept Setting Benchmarks And Making Headlines', position: 'top-[25%] left-[26%] -translate-x-1/2 -translate-y-1/2 font-light', size: 'text-2xl', color: 'text-black' }
+        { content: 'FY25 Has Been Nothing Short Of Spectacular', position: 'top-[15%] left-[26%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' },
+        { content: 'We Kept Setting Benchmarks And Making Headlines', position: 'top-[25%] left-[24%] -translate-x-1/2 -translate-y-1/2 font-light', size: 'text-2xl', color: 'text-black' }
       ]
     },
     {
@@ -169,7 +145,7 @@ const Gallery = () => {
         { src: '/slides/14.png', position: 'top-[60%] left-[45%] -translate-x-1/2 -translate-y-1/2', size: 'w-[70%]' }
       ],
       texts: [
-        { content: 'Reason? The Runwal Edge', position: 'top-[15%] left-[24%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' },
+        { content: 'Reason? The Runwal Edge', position: 'top-[15%] left-[22%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' },
         { content: 'We have Mastered the Art of Luxury', position: 'top-[20%] left-[22%] -translate-x-1/2 -translate-y-1/2 font-light', size: 'text-2xl', color: 'text-black' }
       ]
     },
@@ -239,7 +215,7 @@ const Gallery = () => {
     { id: 32, bgImage:'/slides/background.jpg', images:[{ src:'/slides/32.png', position:'absolute top-0 left-0 w-full h-full', size: 'object-cover object-center' }], texts:[] },
     { id: 33, bgImage:'/slides/background.jpg', images:[{ src:'/slides/33.png', position:'absolute top-0 left-0 w-full h-full', size: 'object-cover object-center' }], texts:[] },
     { id: 34, bgImage:'/slides/background.jpg', images:[{ src:'/slides/34.png', position:'absolute top-0 left-0 w-full h-full', size: 'object-cover object-center' }], texts:[] },
-    { id: 35, bgImage:null, images:[{ src:'/slides/35.png', position:'absolute top-0 left-0 w-full h-full', size: 'w-[90%] object-center' }], texts:[] },
+    { id: 35, bgImage:null, images:[{ src:'/slides/35.jpg', position:'absolute top-0 left-0 w-full h-full', size: 'w-[90%] object-center' }], texts:[] },
     { id: 36, bgImage:'/slides/background.jpg', images:[{ src:'/slides/36.jpg', position:'absolute top-0 left-0 w-full h-full', size: 'w-[95%] object-center' }], texts:[] },
     { id: 37, bgImage:'/slides/background.jpg', images:[{ src:'/slides/37.png', position:'absolute top-1/2 left-1/2 w-full h-full -translate-x-1/2 -translate-y-1/2', size: 'w-[90%]' }], texts:[] },
     { id: 38, bgImage:'/slides/background.jpg', images:[{ src:'/slides/38.png', position:'absolute top-[10%] left-[15%]', size: 'w-[70%]' }], texts:[] },
@@ -250,32 +226,26 @@ const Gallery = () => {
   const getRandomDirection = () => {
     const directions = [
       { 
-        // Slide from left
         initial: { clipPath: "polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)", x: -500 },
         final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 }
       },
       { 
-        // Slide from right  
         initial: { clipPath: "polygon(100% 0%, 100% 0%, 100% 100%, 100% 100%)", x: 500 },
         final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0 }
       },
       { 
-        // Slide from top
         initial: { clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)", y: -300 },
         final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", y: 0 }
       },
       { 
-        // Slide from bottom
         initial: { clipPath: "polygon(0% 100%, 100% 100%, 100% 100%, 0% 100%)", y: 300 },
         final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", y: 0 }
       },
       { 
-        // Diagonal from top-left
         initial: { clipPath: "polygon(0% 0%, 0% 0%, 0% 0%, 0% 0%)", x: -300, y: -200 },
         final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0, y: 0 }
       },
       { 
-        // Diagonal from bottom-right
         initial: { clipPath: "polygon(100% 100%, 100% 100%, 100% 100%, 100% 100%)", x: 300, y: 200 },
         final: { clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)", x: 0, y: 0 }
       }
@@ -283,60 +253,109 @@ const Gallery = () => {
     return directions[Math.floor(Math.random() * directions.length)];
   };
 
-  // ✅ Generate random directions for each slide (regenerate on each component mount)
-  const slideDirections = useRef(
-    slides.map(() => getRandomDirection())
-  );
+  const slideDirections = useRef(slides.map(() => getRandomDirection()));
 
-  // ✅ Regenerate random directions on component mount (refresh)
   useEffect(() => {
     slideDirections.current = slides.map(() => getRandomDirection());
   }, []);
 
-  const navigateToSlide = (targetIndex) => {
-    if (!scrollTriggerRef.current) return;
-    
-    const st = scrollTriggerRef.current;
-    
-    // Calculate target scroll position
-    const targetProgress = targetIndex / (slides.length - 1);
-    const scrollDistance = st.end - st.start;
-    const targetScroll = st.start + (scrollDistance * targetProgress);
-    
-    // Calculate current position
-    const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Calculate distance traveled
-    const distance = Math.abs(targetScroll - currentScroll);
-    
-    // Fixed duration per slide (0.8 seconds per slide)
-    const slideDistance = scrollDistance / (slides.length - 1);
-    const slidesJumped = distance / slideDistance;
-    const duration = slidesJumped * 0.8; // 0.8s per slide
-    
-    gsap.to(window, {
-      scrollTo: { y: targetScroll, autoKill: false },
-      duration: duration,
-      ease: "power2.inOut"
-    });
-  };
+  // ✅ Animate to target slide with same speed in both directions
+ // ✅ Fixed animate function - properly handles backward navigation
+const animateToSlide = (targetIndex) => {
+  if (isAnimating.current || targetIndex === currentSlide) return;
+  
+  isAnimating.current = true;
+  const direction = targetIndex > currentSlide ? 'forward' : 'backward';
+  
+  const currentSlideEl = document.querySelector(`[data-slide-index="${currentSlide}"]`);
+  const targetSlideEl = document.querySelector(`[data-slide-index="${targetIndex}"]`);
+  
+  if (!currentSlideEl || !targetSlideEl) return;
+
+  const currentContent = currentSlideEl.querySelector('.slide-content');
+  const targetContent = targetSlideEl.querySelector('.slide-content');
+  const targetTexts = targetSlideEl.querySelectorAll('.text-element');
+
+  const targetDirection = slideDirections.current[targetIndex];
+  const currentDirection = slideDirections.current[currentSlide];
+
+  // ✅ CRITICAL FIX: Set initial state for target slide IMMEDIATELY
+  gsap.set(targetSlideEl, { clipPath: targetDirection.initial.clipPath, zIndex: 10 });
+  gsap.set(targetContent, { 
+    x: targetDirection.initial.x || 0, 
+    y: targetDirection.initial.y || 0 
+  });
+  gsap.set(targetTexts, { opacity: 0, y: 20 });
+  
+  // ✅ Set current slide z-index lower
+  gsap.set(currentSlideEl, { zIndex: 5 });
+
+  const tl = gsap.timeline({
+    onComplete: () => {
+      setCurrentSlide(targetIndex);
+      // ✅ Reset current slide to initial off-screen state after animation
+      gsap.set(currentSlideEl, { 
+        clipPath: currentDirection.initial.clipPath,
+        zIndex: 1
+      });
+      gsap.set(currentContent, {
+        x: currentDirection.initial.x || 0,
+        y: currentDirection.initial.y || 0
+      });
+      gsap.set(targetSlideEl, { zIndex: 1 });
+      isAnimating.current = false;
+    }
+  });
+
+  // Animate current slide out
+  tl.to(currentContent, {
+    x: currentDirection.initial.x || -500,
+    y: currentDirection.initial.y || 0,
+    duration: 2,
+    ease: "hop"
+  }, 0)
+  
+  // Animate target slide clipPath
+  .to(targetSlideEl, {
+    clipPath: targetDirection.final.clipPath,
+    duration: 2,
+    ease: "hop",
+  }, 0)
+  
+  // Animate target slide content
+  .to(targetContent, {
+    x: targetDirection.final.x || 0,
+    y: targetDirection.final.y || 0,
+    duration: 2,
+    ease: "hop"
+  }, 0)
+  
+  // Animate text
+  .to(targetTexts, {
+    opacity: 1,
+    y: 0,
+    duration: 0.6,
+    stagger: 0.1,
+    ease: "power2.out"
+  }, 0.5);
+};
+
 
   const handlePrevSlide = () => {
-    const newIndex = Math.max(0, currentSlide - 1);
-    setCurrentSlide(newIndex);
-    navigateToSlide(newIndex);
+    if (currentSlide > 0) {
+      animateToSlide(currentSlide - 1);
+    }
   };
 
   const handleNextSlide = () => {
-    const newIndex = Math.min(slides.length - 1, currentSlide + 1);
-    setCurrentSlide(newIndex);
-    navigateToSlide(newIndex);
+    if (currentSlide < slides.length - 1) {
+      animateToSlide(currentSlide + 1);
+    }
   };
 
   useGSAP(() => {
-    const slideElements = gsap.utils.toArray('.slide');
+    const slideElements = document.querySelectorAll('.slide');
     
-    // ✅ Set initial states based on random directions
     slideElements.forEach((slide, index) => {
       const direction = slideDirections.current[index];
       
@@ -345,6 +364,18 @@ const Gallery = () => {
           clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
         });
         gsap.set(slide.querySelector('.slide-content'), { x: 0, y: 0 });
+        
+        // Animate first slide text
+        const firstTexts = slide.querySelectorAll('.text-element');
+        gsap.set(firstTexts, { opacity: 0, y: 20 });
+        gsap.to(firstTexts, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.15,
+          ease: "power2.out",
+          delay: 0.3
+        });
       } else {
         gsap.set(slide, {
           clipPath: direction.initial.clipPath,
@@ -355,108 +386,15 @@ const Gallery = () => {
         });
       }
     });
-
-    // Animate text elements on first slide
-    const firstSlide = slideElements[0];
-    const firstTexts = firstSlide.querySelectorAll('.text-element');
-    if (firstTexts.length) {
-      gsap.set(firstTexts, { opacity: 0, y: 20 });
-      gsap.to(firstTexts, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.15,
-        ease: "power2.out",
-        delay: 0.3
-      });
-    }
-
-    // Create main timeline
-    const tl = gsap.timeline();
-
-    slideElements.forEach((slide, index) => {
-      if (index > 0) {
-        const prevSlide = slideElements[index - 1];
-        const prevContent = prevSlide.querySelector('.slide-content');
-        const currentContent = slide.querySelector('.slide-content');
-        const currentTexts = slide.querySelectorAll('.text-element');
-
-        // ✅ Get random directions for current and previous slides
-        const currentDirection = slideDirections.current[index];
-        const prevDirection = slideDirections.current[index - 1];
-
-        gsap.set(currentTexts, { opacity: 0, y: 20 });
-
-        const timelinePosition = (index - 1) * 4.5;
-
-        // ✅ Animate previous slide out in random direction
-        tl.to(prevContent, {
-          x: prevDirection.initial.x || -500,
-          y: prevDirection.initial.y || 0,
-          duration: 2.5,
-          ease: "hop"
-        }, timelinePosition)
-        
-        // ✅ Animate current slide clipPath
-        .to(slide, {
-          clipPath: currentDirection.final.clipPath,
-          duration: 2.5,
-          ease: "hop",
-        }, timelinePosition)
-        
-        // ✅ Animate current slide content from random direction
-        .to(currentContent, {
-          x: currentDirection.final.x || 0,
-          y: currentDirection.final.y || 0,
-          duration: 2.5, 
-          ease: "hop"
-        }, timelinePosition)
-        
-        .to(currentTexts, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.15,
-          ease: "power2.out"
-        }, timelinePosition + 1)
-        
-        .to({}, { duration: 2 });
-      }
-    });
-
-    // Create ScrollTrigger
-    const st = ScrollTrigger.create({
-      trigger: containerRef.current,
-      start: 'top top',
-      end: () => `+=${window.innerHeight * slides.length * 1}`,
-      animation: tl,
-      scrub: 1.5,
-      pin: true,
-      anticipatePin: 1,
-      onUpdate: (self) => {
-        const newIndex = Math.round(self.progress * (slides.length - 1));
-        if (newIndex !== currentSlide) {
-          setCurrentSlide(newIndex);
-        }
-      }
-    });
-
-    scrollTriggerRef.current = st;
-    console.log('ScrollTrigger created:', st.start, st.end);
-
-    return () => {
-      st.kill();
-      scrollTriggerRef.current = null;
-    };
-
   }, { scope: containerRef });
 
   return (
     <div ref={containerRef} className="h-screen overflow-hidden relative">
       <div ref={slidesRef} className="relative w-full h-full">
-        {slides.map((slide) => (
+        {slides.map((slide, index) => (
           <div
             key={slide.id}
+            data-slide-index={index}
             className="slide absolute inset-0 w-full h-full overflow-hidden"
           >
             <div className="slide-content absolute inset-0 w-full h-full">
@@ -502,9 +440,9 @@ const Gallery = () => {
           className="fixed left-4 top-1/2 -translate-y-1/2 z-50 cursor-pointer transition-opacity duration-300 hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed"
           aria-label="Previous slide"
         >
-          <img src="/left.png" alt="Previous" className="w-12 h-12 md:w-16 md:h-16"  style={{
-      filter: 'brightness(0) saturate(100%) invert(61%) sepia(85%) saturate(549%) hue-rotate(359deg) brightness(92%) contrast(87%)'
-    }} />
+          <img src="/left.png" alt="Previous" className="w-12 h-12 md:w-16 md:h-16" style={{
+            filter: 'brightness(0) saturate(100%) invert(61%) sepia(85%) saturate(549%) hue-rotate(359deg) brightness(92%) contrast(87%)'
+          }} />
         </button>
 
         <button
@@ -513,9 +451,9 @@ const Gallery = () => {
           className="fixed right-4 top-1/2 -translate-y-1/2 z-50 cursor-pointer transition-opacity duration-300 hover:opacity-80 disabled:opacity-30 disabled:cursor-not-allowed"
           aria-label="Next slide"
         >
-          <img src="/right.png" alt="Next" className="w-12 h-12 md:w-16 md:h-16"  style={{
-      filter: 'brightness(0) saturate(100%) invert(61%) sepia(85%) saturate(549%) hue-rotate(359deg) brightness(92%) contrast(87%)'
-    }}/>
+          <img src="/right.png" alt="Next" className="w-12 h-12 md:w-16 md:h-16" style={{
+            filter: 'brightness(0) saturate(100%) invert(61%) sepia(85%) saturate(549%) hue-rotate(359deg) brightness(92%) contrast(87%)'
+          }}/>
         </button>
       </div>
     </div>
