@@ -89,10 +89,10 @@ const Gallery = () => {
       id: 8,
       bgImage:'/slides/background.jpg',
       images: [
-        { src: '/slides/8.png', position: 'top-[60%] left-[50%] -translate-x-1/2 -translate-y-1/2', size: 'w-[80%]' }
+        { src: '/slides/8.jpg', position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', size: 'object-cover' }
       ],
       texts: [
-        { content: 'The Investment Story - Appreciation That Markets Envy', position: 'top-[15%] left-[30%] -translate-x-1/2 -translate-y-1/2 underline', size: 'text-4xl', color: 'text-[#AA8A4C]' }
+        
       ]
     },
     {

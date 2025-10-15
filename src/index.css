@@ -11,7 +11,8 @@ body {
 }
 @font-face {
   font-family: holland;
-  src: url(/fonts/f3.TTF);
+  src: url(/fonts/zapf-humanist-601-bt.ttf);
+  
 }
 @font-face {
   font-family: logo;
@@ -19,6 +20,6 @@ body {
 }
 @font-face {
   font-family: subtext;
-  src: url(/fonts/f1.OTF);
+  src: url('/fonts/CERA PRO REGULAR.OTF')
 }
 
