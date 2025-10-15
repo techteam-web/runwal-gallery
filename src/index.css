@@ -11,5 +11,14 @@ body {
 }
 @font-face {
   font-family: holland;
-  src: url(/font.otf);
+  src: url(/fonts/f3.TTF);
 }
+@font-face {
+  font-family: logo;
+  src: url(/fonts/f2.TTF);
+}
+@font-face {
+  font-family: subtext;
+  src: url(/fonts/f1.OTF);
+}
+

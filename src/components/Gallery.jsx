@@ -26,7 +26,7 @@ const Gallery = () => {
         { src: '/slides/1.png', position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', size: 'w-64' },
       ],
       texts: [
-        { content: 'Building for generations to come', position: 'bottom-[10%] left-1/2 -translate-y-1/2 -translate-x-1/2 uppercase', size: 'text-5xl', color: 'text-[#AA8A4C]' }
+        { content: 'Building for generations to come', position: 'bottom-[10%] left-1/2 -translate-y-1/2 -translate-x-1/2 uppercase', size: 'text-4xl', color: 'text-[#AA8A4C]' }
       ]
     },
     {
