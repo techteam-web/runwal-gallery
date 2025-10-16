@@ -89,9 +89,19 @@ const Type1Slide = ({ data }) => {
             {data.stats.map((stat, index) => (
               <div key={index}>
                 <div className="flex items-baseline text-element">
-                  <span className={stat.valueClassName}>
-                    {stat.value}
-                  </span>
+                  {/* ✅ ONLY CHANGE: Render image if valueImage exists, otherwise text */}
+                  {stat.valueImage ? (
+                    <img 
+                      src={stat.valueImage} 
+                      alt={stat.value}
+                      className={stat.valueImageClassName || stat.valueClassName}
+                    />
+                  ) : (
+                    <span className={stat.valueClassName}>
+                      {stat.value}
+                    </span>
+                  )}
+                  
                   <span className={stat.labelClassName}>
                     {stat.label}
                   </span>

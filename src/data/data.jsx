@@ -23,53 +23,59 @@ export const type1SlidesData = [
   
   imageContainerClassName: 'w-full bg-white flex items-center justify-center' // ✅ Full width + background color + centering
 },
-  {
-    id: 1,
-    image: {
-      src: '/broucher/1.jpg',
-      className: 'object-cover w-full h-full'
+ {
+  id: 1,
+  image: {
+    src: '/broucher/1.jpg',
+    className: 'object-cover w-full h-full'
+  },
+  title: {
+    text: 'ABOUT US',
+    className: 'text-xl tracking-widest text-gray-500 mb-4 font-[holland]'
+  },
+  showLineAfterTitle: true,
+  lineAfterTitleClassName: '',
+  
+  description: {
+    text: 'For over 45 years, Runwal Realty has been crafting legacies, not just spaces. Our residential, commercial, and retail projects are built with trust, innovation, and precision, designed to stand the test of time and become a lasting part of your story.',
+    className: 'text-gray-600 leading-relaxed mb-8 font-[subtext] py-5'
+  },
+  stats: [
+    {
+      value: '',
+      valueImage: '/broucher/icon1.png', // ✅ PNG image for value
+      label: 'YEARS OF LEGACY',
+      valueClassName: 'text-4xl font-bold text-amber-600 py-2',
+      valueImageClassName: 'h-10 w-auto', // ✅ Control image size
+      labelClassName: 'ml-2 text-xs text-gray-500 font-[subtext]',
+      showLineAfter: true,
+      lineClassName: ''
     },
-    title: {
-      text: 'ABOUT US',
-      className: 'text-xl tracking-widest text-gray-500 mb-4 font-[holland]'
+    {
+      value: '',
+      valueImage: '/broucher/icon2.png', // ✅ PNG image for value
+      label: 'HAPPY FAMILIES',
+      valueClassName: 'text-4xl font-bold text-amber-600 py-2',
+      valueImageClassName: 'h-10 w-auto',
+      labelClassName: 'ml-2 text-xs text-gray-500 font-[subtext]',
+      showLineAfter: true,
+      lineClassName: ''
     },
-    // ✅ GoldLine control
-    showLineAfterTitle: true,
-    lineAfterTitleClassName: '',
-    
-    description: {
-      text: 'For over 45 years, Runwal Realty has been crafting legacies, not just spaces. Our residential, commercial, and retail projects are built with trust, innovation, and precision, designed to stand the test of time and become a lasting part of your story.',
-      className: 'text-gray-600 leading-relaxed mb-8 font-[subtext] py-5'
-    },
-    stats: [
-      {
-        value: '45',
-        label: 'YEARS OF LEGACY',
-        valueClassName: 'text-4xl font-bold text-amber-600 py-2',
-        labelClassName: 'ml-2 text-xs text-gray-500 font-[subtext] ',
-        showLineAfter: true,  // ✅ Line control
-        lineClassName: ''
-      },
-      {
-        value: '50K',
-        label: 'HAPPY FAMILIES',
-        valueClassName: 'text-4xl font-bold text-amber-600 py-2 ',
-        labelClassName: 'ml-2 text-xs text-gray-500 font-[subtext] ',
-        showLineAfter: true,  // ✅ Line control
-        lineClassName: ''
-      },
-      {
-        value: '50',
-        label: 'PROJECTS',
-        valueClassName: 'text-4xl font-bold text-amber-600 py-2 ',
-        labelClassName: 'ml-2 text-xs text-gray-500 font-[subtext] ',
-        showLineAfter: true,  // ✅ Line control (final line)
-        lineClassName: ''
-      }
-    ],
-    contentClassName: 'w-1/4 bg-white p-8 flex flex-col justify-center',
-    statsContainerClassName: 'space-y-4'
-  },{
+    {
+      value: '',
+      valueImage: '/broucher/icon3.png', // ✅ PNG image for value
+      label: 'PROJECTS',
+      valueClassName: 'text-4xl font-bold text-amber-600 py-2',
+      valueImageClassName: 'h-10 w-auto',
+      labelClassName: 'ml-2 text-xs text-gray-500 font-[subtext]',
+      showLineAfter: true,
+      lineClassName: ''
+    }
+  ],
+  contentClassName: 'w-1/4 bg-white p-8 flex flex-col justify-center',
+  statsContainerClassName: 'space-y-4'
+}
+,{
   id: 26,
   image: {
     src: '/broucher/24.jpg',
