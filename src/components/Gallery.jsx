@@ -36,7 +36,7 @@ const Gallery = () => {
         { src: '/slides/2.png', position: 'top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2', size: 'w-[70%]' },
       ],
       texts: [
-        { content: 'A Legacy Of Trust & Quality', position: 'top-10 left-[30%] -translate-x-1/2', size: 'text-4xl', color: 'text-[#AA8A4C]' },
+        { content: 'A Legacy Of Trust & Quality', position: 'top-10 left-[30%] -translate-x-1/2', size: 'text-4xl font-bold', color: 'text-[#AA8A4C]' },
       ]
     },
     {
@@ -423,7 +423,7 @@ const animateToSlide = (targetIndex) => {
                   className={`text-element absolute ${text.position} ${text.size} ${text.color} font-bold`}
                   style={{
                     fontFamily:'holland',
-                    fontWeight:'normal'
+                    fontWeight:'bold'
                   }}
                 >
                   {text.content}
