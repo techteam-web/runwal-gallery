@@ -124,7 +124,7 @@ export const type1SlidesData = [
   id: 27,
   image: {
     src: '/slides/18.jpg',
-    className: 'object-contain w-full h-full' // ✅ object-contain = fits without cropping
+    className: 'object-contain w-full h-full bg-white' // ✅ object-contain = fits without cropping
   },
   title: {
     text: '',
@@ -172,7 +172,7 @@ export const type1SlidesData = [
   id: 26,
   image: {
     src: '/slides/17.jpg',
-    className: 'object-contain w-full h-full' // ✅ object-contain = fits without cropping
+    className: 'object-contain w-full h-full bg-white' // ✅ object-contain = fits without cropping
   },
   title: {
     text: '',
