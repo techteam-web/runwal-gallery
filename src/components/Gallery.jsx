@@ -420,7 +420,7 @@ const animateToSlide = (targetIndex) => {
               {slide.texts?.map((text, idx) => (
                 <div
                   key={idx}
-                  className={`text-element absolute ${text.position} ${text.size} ${text.color} font-bold`}
+                  className={`text-element absolute ${text.position} ${text.size} ${text.color} `}
                   style={{
                     fontFamily:'holland',
                     fontWeight:'bold'
